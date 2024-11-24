@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Boro - El País de la Chatarra</title>
+    <style>
+        :root {
+            --neon-blue: #00f3ff;
+            --neon-pink: #ff00ff;
+            --dark-bg: #0a0a0a;
+            --rust-color: #8b4513;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--dark-bg);
+            color: #ffffff;
+            font-family: 'Courier New', monospace;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .glitch-container {
+            position: relative;
+            text-align: center;
+            padding: 2rem;
+            background: linear-gradient(45deg, #000000, #1a1a1a);
+            border-bottom: 2px solid var(--neon-blue);
+        }
+
+        .title {
+            font-size: 3rem;
+            color: var(--neon-blue);
+            text-transform: uppercase;
+            letter-spacing: 0.5rem;
+            text-shadow: 0 0 10px var(--neon-blue),
+                         0 0 20px var(--neon-blue),
+                         0 0 30px var(--neon-blue);
+            animation: glitch 2s infinite;
+        }
+
+        .subtitle {
+            color: var(--neon-pink);
+            font-size: 1.2rem;
+            margin-top: 0.5rem;
+        }
+
+        .map-container {
+            position: relative;
+            width: 100%;
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 1rem;
+        }
+
+        .map-image {
+            width: 100%;
+            height: auto;
+            filter: brightness(0.8) contrast(1.2);
+        }
+
+        .location-marker {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: var(--neon-pink);
+            border-radius: 50%;
+            cursor: pointer;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 0 10px var(--neon-pink);
+            transition: all 0.3s ease;
+        }
+
+        .location-marker:hover {
+            transform: translate(-50%, -50%) scale(1.2);
+            box-shadow: 0 0 20px var(--neon-pink);
+        }
+
+        .info-panel {
+            position: fixed;
+            right: -400px;
+            top: 0;
+            width: 400px;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.9);
+            border-left: 2px solid var(--neon-blue);
+            padding: 2rem;
+            transition: right 0.3s ease;
+            overflow-y: auto;
+        }
+
+        .info-panel.active {
+            right: 0;
+        }
+
+        .info-panel h2 {
+            color: var(--neon-blue);
+            border-bottom: 2px solid var(--neon-pink);
+            padding-bottom: 0.5rem;
+        }
+
+        .close-button {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            color: var(--neon-pink);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        @keyframes glitch {
+            0% {
+                text-shadow: 0 0 10px var(--neon-blue);
+            }
+            15% {
+                text-shadow: 2px 2px 10px var(--neon-pink);
+            }
+            16% {
+                text-shadow: -2px -2px 10px var(--neon-blue);
+            }
+            49% {
+                text-shadow: 0 0 10px var(--neon-blue);
+            }
+            50% {
+                text-shadow: 2px 2px 10px var(--neon-pink);
+            }
+            51% {
+                text-shadow: -2px -2px 10px var(--neon-blue);
+            }
+            100% {
+                text-shadow: 0 0 10px var(--neon-blue);
+            }
+        }
+
+        .placeholder-image {
+            width: 100%;
+            height: 600px;
+            background: linear-gradient(45deg, #1a1a1a, #2a2a2a);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--neon-blue);
+            font-size: 1.2rem;
+            border: 2px solid var(--neon-pink);
+        }
+    </style>
+</head>
+<body>
+    <div class="glitch-container">
+        <h1 class="title">Boro</h1>
+        <p class="subtitle">El País de la Chatarra y la Desesperación</p>
+    </div>
+
+    <div class="map-container">
+        <!-- Placeholder for the isometric image -->
+        <div class="placeholder-image">
+            [Aquí va tu imagen isométrica de Boro]
+        </div>
+        
+        <!-- Los marcadores se agregarán dinámicamente con JavaScript -->
+    </div>
+
+    <div class="info-panel">
+        <button class="close-button">×</button>
+        <h2></h2>
+        <div class="info-content"></div>
+    </div>
+
+    <script>
+        const cityData = {
+            chalvark: {
+                name: "Chalvark",
+                title: "La Capital",
+                description: "Un bastión de chatarra y luces eléctricas, envuelto en tormentas perpetuas. El corazón de Boro y su centro político, aunque está gobernado más por las facciones que por la gente. Las calles están llenas de humo, y las luces de neón parpadean entre las grietas de edificios colapsados.",
+                coordinates: { x: 50, y: 50 }
+            },
+            zhorvak: {
+                name: "Zhorvak",
+                title: "La Ciudad Laboratorio",
+                description: "Una ciudad-laboratorio donde científicos y mecánicos trabajan para aprovechar los desechos de Lumis. Es un hervidero de inventos brillantes y fracasos catastróficos. Innovadora y peligrosa, llena de explosiones y experimentos fallidos.",
+                coordinates: { x: 30, y: 70 }
+            },
+            maktar: {
+                name: "Maktar",
+                title: "La Ciudad del Contrabando",
+                description: "Una ciudad al norte, famosa por su comercio ilegal. Aquí se encuentran contrabandistas, ladrones y aquellos que buscan oportunidades rápidas. Bulliciosa y desordenada, con mercados clandestinos escondidos tras fachadas aparentemente inofensivas.",
+                coordinates: { x: 70, y: 30 }
+            },
+            droxar: {
+                name: "Droxar",
+                title: "La Ciudad Fortaleza",
+                description: "Una ciudad-fortaleza al este, donde las mafias controlan el comercio de armas y tecnología avanzada. Militarizada y austera, con estructuras robustas y patrullas constantes.",
+                coordinates: { x: 80, y: 60 }
+            },
+            garvul: {
+                name: "Garvul",
+                title: "La Ciudad Verde",
+                description: "Una ciudad al sur, cerca de los límites de Arboris. Aquí se desarrollan granjas hidropónicas y un comercio incipiente con productos naturales. Verde y mecánica, un contraste interesante con el resto de Boro.",
+                coordinates: { x: 40, y: 85 }
+            }
+        };
+
+        // Crear marcadores
+        const mapContainer = document.querySelector('.map-container');
+        Object.entries(cityData).forEach(([key, city]) => {
+            const marker = document.createElement('div');
+            marker.className = 'location-marker';
+            marker.style.left = `${city.coordinates.x}%`;
+            marker.style.top = `${city.coordinates.y}%`;
+            marker.dataset.city = key;
+            mapContainer.appendChild(marker);
+        });
+
+        // Manejar clicks en los marcadores
+        const infoPanel = document.querySelector('.info-panel');
+        const infoPanelTitle = infoPanel.querySelector('h2');
+        const infoContent = infoPanel.querySelector('.info-content');
+
+        document.querySelectorAll('.location-marker').forEach(marker => {
+            marker.addEventListener('click', () => {
+                const city = cityData[marker.dataset.city];
+                infoPanelTitle.textContent = `${city.name} - ${city.title}`;
+                infoContent.textContent = city.description;
+                infoPanel.classList.add('active');
+            });
+        });
+
+        // Cerrar panel de información
+        document.querySelector('.close-button').addEventListener('click', () => {
+            infoPanel.classList.remove('active');
+        });
+    </script>
+</body>
+</html>
